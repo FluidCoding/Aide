@@ -1,0 +1,11 @@
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="YES"
+    android:id="@+id/buttonYes"
+    android:layout_column="1"
+    android:onClick="onClick"
+    android:layout_gravity="center"
+    android:gravity="center" />
+<!-- From: file:/C:/Users/User/AndroidStudioProjects/Aide/app/src/main/res/layout/word_button.xml -->
