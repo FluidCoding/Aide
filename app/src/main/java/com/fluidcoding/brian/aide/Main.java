@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
     TextSpeak speaker;
     boolean liveSpeak = false;
     private ArrayList<Button> sentence;
+    private HorizontalScrollView scrollSpeakView;
     private LinearLayout speakView;
     GridLayout tblWords;
     WordBase dbHelper;
@@ -41,6 +43,7 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         speaker = new TextSpeak(this);
         sentence = new ArrayList<>();
         speakView = (LinearLayout)findViewById(R.id.speakView);
+        scrollSpeakView = (HorizontalScrollView)findViewById(R.id.horizontalScrollView);
         tblWords = (GridLayout)findViewById(R.id.controlGrid);
         btns = new ArrayList<>();
 
@@ -156,7 +159,15 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         sentence.add(wordView);
         speaker.addWord(text);
         speakView.addView(wordView);
+        scrollSpeakView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollSpeakView.fullScroll(View.FOCUS_RIGHT);
+            }
+        }, 100);
+        Log.d("SCROLL: ", String.valueOf(sentence.size()*wordView.getWidth()));
     }
+
     public class PrefChanged implements SharedPreferences.OnSharedPreferenceChangeListener{
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
