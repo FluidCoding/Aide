@@ -3,9 +3,11 @@ package com.fluidcoding.brian.aide;
 import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 
 public class Main extends AppCompatActivity implements Button.OnClickListener{
 
@@ -35,6 +42,7 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
     WordBase dbHelper;
     SQLiteDatabase dbHandle;
     ArrayList<Button> btns;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,23 +61,30 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         dbHelper = new WordBase(this);
 
         dbHandle = dbHelper.getWritableDatabase();
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         // Display 1st page of words
 
-        Cursor curse = dbHandle.query("WORDS", new String[] {"ID", "TYPE", "DISPLAY_TEXT"},null,null,null,null,null,null);
-//        Cursor curse = dbHandle.rawQuery("WORDS", "")
+        sp.registerOnSharedPreferenceChangeListener(new PrefChanged());
+
+        Cursor curse = dbHandle.query("WORDS", new String[]{"ID", "TYPE", "DISPLAY_TEXT"}, null, null, null, null, null, null);
 //        Cursor curse = dbHandle.query("WORDS", null, null, null, null, null, null);
-//        dbHandle.query()
+
         Log.d("Cursor", String.valueOf(curse.getCount()));
-        /*
-        if(curse.moveToFirst()){
-            Log.d("ColumnC", String.valueOf(curse.getColumnCount()));
-            Log.d("DB: ", String.valueOf(curse.getInt(0)));
-            Log.d("DB: ", String.valueOf(curse.getString(1)));
-            Log.d("DB: ", String.valueOf(curse.getString(2)));
-  //          Log.d("DB: ", String.valueOf(curse.getString(4)));
+
+        Map<String, ?> keys = sp.getAll();
+        if(keys.isEmpty()){
+            sp.edit().putBoolean("auto_speak", false).apply();
+        }else {
+            liveSpeak=(Boolean)keys.get("auto_speak");
+            /*Iterator<String> keyIt = keys.keySet().iterator();
+            while (keyIt.hasNext()) {
+                String s = keyIt.next();
+                Log.d("Prefs: ", s + " : " + keys.get(s));
+            }
+           */
         }
-        */
+
         Button b;
         while(curse.moveToNext()){
             int i=0;
@@ -95,12 +110,17 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
                 }
                 i++;
             }
-            //9 x 3
         }
 
 
 
         curse.close();
+    }
+
+    @Override
+    protected void onPostResume() {
+        liveSpeak = sp.getBoolean("auto_speak", false);
+        super.onPostResume();
     }
 
     @Override
@@ -155,5 +175,14 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         sentance.add(wordView);
         speaker.addWord(text);
         speakView.addView(wordView);
+    }
+    public class PrefChanged implements SharedPreferences.OnSharedPreferenceChangeListener{
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Log.d("PREF CHANG:", key);
+            if(key.equals("auto_speak")){
+                liveSpeak = sharedPreferences.getBoolean(key, false);
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:2:1-27:12
+ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:2:1-28:12
 	xmlns:android
 		ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:2:11-69
 	package
@@ -14,7 +14,7 @@ ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest
 		INJECTED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml
 application
-ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:5:5-25:19
+ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:5:5-26:19
 MERGED from [com.android.support:appcompat-v7:23.0.1] C:\Users\User\AndroidStudioProjects\Aide\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.0.1] C:\Users\User\AndroidStudioProjects\Aide\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:design:23.0.1] C:\Users\User\AndroidStudioProjects\Aide\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\AndroidManifest.xml:22:5-20
@@ -51,9 +51,11 @@ ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest
 	android:name
 		ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:18:27-74
 activity#com.fluidcoding.brian.aide.SettingsActivity
-ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:21:9-24:20
+ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:21:9-25:20
 	android:label
-		ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:23:13-60
+		ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:24:13-60
+	android:parentActivityName
+		ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:23:13-47
 	android:name
 		ADDED from C:\Users\User\AndroidStudioProjects\Aide\app\src\main\AndroidManifest.xml:22:13-45
 uses-sdk
