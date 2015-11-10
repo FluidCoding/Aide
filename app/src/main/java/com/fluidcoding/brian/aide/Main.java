@@ -1,42 +1,29 @@
 package com.fluidcoding.brian.aide;
 
-import android.app.ActionBar;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.prefs.PreferenceChangeEvent;
-import java.util.prefs.PreferenceChangeListener;
 
 public class Main extends AppCompatActivity implements Button.OnClickListener{
 
     TextSpeak speaker;
     boolean liveSpeak = false;
-    private ArrayList<Button> sentance;
+    private ArrayList<Button> sentence;
     private LinearLayout speakView;
     GridLayout tblWords;
     WordBase dbHelper;
@@ -52,26 +39,13 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         setSupportActionBar(toolbar);
 
         speaker = new TextSpeak(this);
-        sentance = new ArrayList<>();
+        sentence = new ArrayList<>();
         speakView = (LinearLayout)findViewById(R.id.speakView);
         tblWords = (GridLayout)findViewById(R.id.controlGrid);
         btns = new ArrayList<>();
 
-
-        dbHelper = new WordBase(this);
-
-        dbHandle = dbHelper.getWritableDatabase();
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        // Display 1st page of words
-
         sp.registerOnSharedPreferenceChangeListener(new PrefChanged());
-
-        Cursor curse = dbHandle.query("WORDS", new String[]{"ID", "TYPE", "DISPLAY_TEXT"}, null, null, null, null, null, null);
-//        Cursor curse = dbHandle.query("WORDS", null, null, null, null, null, null);
-
-        Log.d("Cursor", String.valueOf(curse.getCount()));
-
         Map<String, ?> keys = sp.getAll();
         if(keys.isEmpty()){
             sp.edit().putBoolean("auto_speak", false).apply();
@@ -84,6 +58,15 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
             }
            */
         }
+
+        dbHelper = new WordBase(this);
+        dbHandle = dbHelper.getWritableDatabase();
+
+
+        Cursor curse = dbHandle.query("WORDS", new String[]{"ID", "TYPE", "DISPLAY_TEXT"}, null, null, null, null, null, null);
+//        Cursor curse = dbHandle.query("WORDS", null, null, null, null, null, null);
+
+        Log.d("Cursor", String.valueOf(curse.getCount()));
 
         Button b;
         while(curse.moveToNext()){
@@ -111,8 +94,6 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
                 i++;
             }
         }
-
-
 
         curse.close();
     }
@@ -149,15 +130,15 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
     }
 
     public void onDeleteLastClick(View v){
-        if(sentance.size()!=0){
-            speakView.removeViewAt(sentance.size()-1);
-            sentance.remove(sentance.size()-1);
+        if(sentence.size()!=0){
+            speakView.removeViewAt(sentence.size()-1);
+            sentence.remove(sentence.size()-1);
             speaker.removeLastWord();
         }
     }
 
     public void onSpeakClick(View v){
-        if(sentance.size()!=0){
+        if(sentence.size()!=0){
             speaker.speak();
         }
     }
@@ -172,7 +153,7 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         Button wordView = new Button(this);
         wordView.setLayoutParams(b.getLayoutParams());
         wordView.setText(text);
-        sentance.add(wordView);
+        sentence.add(wordView);
         speaker.addWord(text);
         speakView.addView(wordView);
     }
