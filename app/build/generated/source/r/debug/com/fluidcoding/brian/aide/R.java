@@ -2667,7 +2667,6 @@ containing a value of this type.
         public static final int pref_data_sync=0x7f060000;
         public static final int pref_general=0x7f060001;
         public static final int pref_headers=0x7f060002;
-        public static final int pref_notification=0x7f060003;
     }
     public static final class styleable {
         /** Attributes that can be used with a ActionBar.

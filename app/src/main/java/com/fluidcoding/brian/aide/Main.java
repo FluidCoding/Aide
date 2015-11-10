@@ -55,13 +55,11 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         dbHandle = dbHelper.getWritableDatabase();
 
         // Display 1st page of words
-        Log.d("QUERY", "QUERY");
 
         Cursor curse = dbHandle.query("WORDS", new String[] {"ID", "TYPE", "DISPLAY_TEXT"},null,null,null,null,null,null);
 //        Cursor curse = dbHandle.rawQuery("WORDS", "")
 //        Cursor curse = dbHandle.query("WORDS", null, null, null, null, null, null);
 //        dbHandle.query()
-        Log.d("here", "jhghgvhg");
         Log.d("Cursor", String.valueOf(curse.getCount()));
         /*
         if(curse.moveToFirst()){
@@ -103,7 +101,6 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
 
 
         curse.close();
-        // 1 17
     }
 
     @Override
