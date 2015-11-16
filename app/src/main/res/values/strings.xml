@@ -28,7 +28,10 @@
 
 
     <!-- Control Display Layout -->
-    <string name="pref_header_control_display">Edit Control Layout</string>
+    <string name="pref_header_control_display">Edit Word Controls</string>
+
+    <string name="pref_title_add_word">Add new word</string>
+    <string name="pref_title_edit_layout">Edit control layout</string>
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>

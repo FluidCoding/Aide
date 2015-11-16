@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,7 +26,6 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
 
     TextSpeak speaker;
     boolean liveSpeak = false;
-    private ArrayList<Button> sentence;
     private HorizontalScrollView scrollSpeakView;
     private LinearLayout speakView;
     GridLayout tblWords;
@@ -40,8 +41,8 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        speaker = new TextSpeak(this);
-        sentence = new ArrayList<>();
+        Log.d("Lifecycle", "OnCreate");
+
         speakView = (LinearLayout)findViewById(R.id.speakView);
         scrollSpeakView = (HorizontalScrollView)findViewById(R.id.horizontalScrollView);
         tblWords = (GridLayout)findViewById(R.id.controlGrid);
@@ -61,6 +62,20 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
             }
            */
         }
+
+        // Load last sentence
+        if(savedInstanceState!=null && savedInstanceState.containsKey("speaker")){
+            speaker = savedInstanceState.getParcelable("speaker");
+            try{
+                speaker.init(this);
+                addSentenceViews();
+            }
+            catch(NullPointerException ex){speaker = new TextSpeak(this);}
+        }
+        else {
+            speaker = new TextSpeak(this);
+        }
+
 
         dbHelper = new WordBase(this);
         dbHandle = dbHelper.getWritableDatabase();
@@ -102,9 +117,43 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
     }
 
     @Override
-    protected void onPostResume() {
+    protected void onStart() {
         liveSpeak = sp.getBoolean("auto_speak", false);
+
+        Log.d("Lifecycle", "OnStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("Lifecycle", "OnResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d("Lifecycle", "OnPostResume");
         super.onPostResume();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d("Lifecycle", "OnPause");
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d("Lifecycle", "OnStop");
+        speaker.release();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle saveInstanceState){
+        Log.d("Lifecycle", "OnSaveInstanceState");
+        if(speaker.getWords().size()>0)
+            saveInstanceState.putParcelable("speaker", speaker);
     }
 
     @Override
@@ -133,17 +182,33 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
     }
 
     public void onDeleteLastClick(View v){
-        if(sentence.size()!=0){
-            speakView.removeViewAt(sentence.size()-1);
-            sentence.remove(sentence.size()-1);
+        int wordSize = speaker.getWords().size();
+        if(wordSize!=0){
+            speakView.removeViewAt(wordSize-1);
             speaker.removeLastWord();
         }
     }
 
     public void onSpeakClick(View v){
-        if(sentence.size()!=0){
+        if(speaker.getWords().size()!=0){
             speaker.speak();
         }
+    }
+
+    public void addSentenceViews(){
+        for(String word: speaker.getWords()) {
+            Button wordView = new Button(this);
+            //wordView.setLayoutParams(b.getLayoutParams());
+            wordView.setText(word);
+            speakView.addView(wordView);
+        }
+        scrollSpeakView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollSpeakView.fullScroll(View.FOCUS_RIGHT);
+            }
+        }, 100);
+
     }
 
     @Override
@@ -153,10 +218,10 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
         if(liveSpeak)
             speaker.speak( text );
 
+
         Button wordView = new Button(this);
         wordView.setLayoutParams(b.getLayoutParams());
         wordView.setText(text);
-        sentence.add(wordView);
         speaker.addWord(text);
         speakView.addView(wordView);
         scrollSpeakView.postDelayed(new Runnable() {
@@ -165,7 +230,6 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
                 scrollSpeakView.fullScroll(View.FOCUS_RIGHT);
             }
         }, 100);
-        Log.d("SCROLL: ", String.valueOf(sentence.size()*wordView.getWidth()));
     }
 
     public class PrefChanged implements SharedPreferences.OnSharedPreferenceChangeListener{

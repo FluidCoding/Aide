@@ -5,7 +5,7 @@
     <header android:fragment="com.fluidcoding.brian.aide.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" android:icon="@drawable/ic_info_black_24dp" />
 
-    <header android:frarment="com.fluidcoding.brian.aide.SettingsActivity$EditControlsFragment"
+    <header android:fragment="com.fluidcoding.brian.aide.SettingsActivity$EditControlsFragment"
         android:title="@string/pref_header_control_display" />
 
 </preference-headers>
