@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:title="@string/pref_title_edit_layout">
+    <Preference android:title="@string/pref_title_edit_layout"
+        android:icon="@drawable/ic_action_edit">
     </Preference>
 
-    <Preference android:title="@string/pref_title_add_word">
+    <Preference android:title="@string/pref_title_add_word"
+        android:icon="@drawable/ic_action_add">
     </Preference>
 
 </PreferenceScreen>

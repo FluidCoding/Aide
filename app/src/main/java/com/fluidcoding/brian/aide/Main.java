@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ *  Add sharedpreference for admin mode + key + timeout
+ */
 public class Main extends AppCompatActivity implements Button.OnClickListener{
 
     TextSpeak speaker;
