@@ -96,17 +96,7 @@ public class Main extends AppCompatActivity implements Button.OnClickListener{
                 Log.d("DB: ", String.valueOf(curse.getString(i)));
                 if(i%3==2){
                     b = new Button(this);
-//                    params = new TableRow.LayoutParams();
-                   /* GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                    params.columnSpec = GridLayout.spec(row);
-                    params.rowSpec = GridLayout.spec(row);
-                    params.setGravity(Gravity.CENTER);
-                    params.width = GridLayout.LayoutParams.WRAP_CONTENT;
-                    params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-                    b.setLayoutParams(params);
-                    */
                     b.setOnClickListener(this);
-//                    b.setLayoutParams(new TableRow.LayoutParams(1));
                     b.setText(curse.getString(i));
 
                     btns.add(b);
